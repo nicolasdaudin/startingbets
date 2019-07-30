@@ -1,0 +1,11 @@
+.left-message {
+  display:flex;
+  justify-content: flex-start;
+}
+
+.right-message {
+  display:flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  font-weight: bold;
+}
