@@ -1,25 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import JourneyMessage from './JourneyMessage';
-import { getThemeProps } from '@material-ui/styles';
 
 
-const messages = [
-  { origin: 'user', content: 'ça va', date: '2019-07-29 14:39:31'},
-  { origin: 'admin', content: 'oui', date: '2019-07-29 15:39:31'},
-  { origin: 'user', content: 'tu peux parier sur la victoire du PSG demain', date: '2019-07-30 11:22:31'},
-  { origin: 'admin', content: 'cest bon cest fait', date: '2019-07-30 14:39:31'}
-]
 
 const JourneyConversation = (props) => (
-  <div>
+  <div className='journey-conversation'>
     <h3>Derniers messages</h3>
-    { messages.map( (message) => (
+    { props.messages.map( (message) => (
       <JourneyMessage 
-         key={message.content} 
+         key={message.date} 
         {...message}
         screen={props.screen}  />
     ))}
   </div>
 )
 
-export default JourneyConversation;
+const mapStateToProps = (state) => ({
+  messages : state.conversation.messages
+})
+
+const ConnectedJourneyConversation = connect(mapStateToProps)(JourneyConversation);
+
+export default ConnectedJourneyConversation;

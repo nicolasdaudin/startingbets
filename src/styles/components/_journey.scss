@@ -5,7 +5,11 @@
 
 .right-message {
   display:flex;
-  align-items: baseline;
   justify-content: flex-end;
-  font-weight: bold;
+}
+
+.journey-conversation {
+  width: 60%;
+  margin: auto;
+
 }
