@@ -5,7 +5,7 @@ import JourneyMessage from './JourneyMessage';
 
 
 const JourneyConversation = (props) => (
-  <div className='journey-conversation'>
+  <div>
     <h3>Derniers messages</h3>
     { props.messages.map( (message) => (
       <JourneyMessage 

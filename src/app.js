@@ -8,11 +8,35 @@ import 'normalize.css/normalize.css';
 import  './styles/styles.scss'
 import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
+import numeral from 'numeral';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
 import {setMessages} from './actions/conversation.js'
 
 moment.locale('fr');
+
+// load a locale
+numeral.register('locale', 'fr', {
+  delimiters: {
+      thousands: ' ',
+      decimal: '.' // should be ',' but otherwise it won't recognize the 34.50 (for example) in the React Data Grid in Bookmaker thingy
+  },
+  abbreviations: {
+      thousand: 'k',
+      million: 'm',
+      billion: 'b',
+      trillion: 't'
+  },
+  ordinal : function (number) {
+      return number === 1 ? 'er' : 'ème';
+  },
+  currency: {
+      symbol: '€'
+  }
+});
+
+// switch between locales
+numeral.locale('fr');
 
 const store = configureStore();
 //console.log('testing sourcemaps');

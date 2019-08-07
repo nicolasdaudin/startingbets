@@ -32,7 +32,7 @@ export  class AddJourneyMessageForm extends React.Component {
   
   render() {
     return (
-      <form className='journey-conversation' onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit}>
         <textarea
           value={this.state.message}
           onChange={this.onMessageChange}
