@@ -10,7 +10,7 @@ export  class AddJourneyMessageForm extends React.Component {
 
     this.state = {
       message : '',
-      origin: props.screen
+      origin: props.role
     }
 
   }

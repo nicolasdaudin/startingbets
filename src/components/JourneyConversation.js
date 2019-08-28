@@ -9,9 +9,9 @@ const JourneyConversation = (props) => (
     <h3>Derniers messages</h3>
     { props.messages.map( (message) => (
       <JourneyMessage 
-         key={message.date} 
+        key={message.date} 
         {...message}
-        screen={props.screen}  />
+        role={props.role}  />
     ))}
   </div>
 )

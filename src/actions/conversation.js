@@ -1,6 +1,5 @@
-export const setMessages = (messages) => ({
-  type: 'SET_MESSAGES',
-  messages
+export const setMessages = () => ({
+  type: 'SET_MESSAGES'
 });
 
 export const addMessage = (message) => ({

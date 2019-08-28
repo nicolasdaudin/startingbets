@@ -12,6 +12,7 @@ import numeral from 'numeral';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
 import {setMessages} from './actions/conversation.js'
+import {setBookmakerFunds} from './actions/bookmakerFunds.js';
 
 moment.locale('fr');
 
@@ -58,11 +59,7 @@ const renderApp = () => {
   }
 }
 
-const defaultMessages =   [{ origin: 'user', content: 'ça va', date: '2019-07-29 14:39:31'},
-{ origin: 'admin', content: 'oui', date: '2019-07-29 15:39:31'},
-{ origin: 'user', content: 'tu peux parier sur la victoire du PSG demain', date: '2019-07-30 11:22:31'},
-{ origin: 'admin', content: 'cest bon cest fait', date: '2019-07-30 14:39:31'},
-{ origin: 'admin', content: 'JE CROIS QUE JAI REUSSI A ME CONNECTER PUTAIN', date: '2019-07-30 14:39:31'}]
+
 
 firebase.auth().onAuthStateChanged( (user) => {
   // this is called on each change of user auth state, but also at the beginning
@@ -73,7 +70,8 @@ firebase.auth().onAuthStateChanged( (user) => {
     console.log('user logged in');
 
     store.dispatch(login(user.uid));
-    store.dispatch(setMessages(defaultMessages));
+    store.dispatch(setMessages());
+    
 
     renderApp();
     if (history.location.pathname === '/'){

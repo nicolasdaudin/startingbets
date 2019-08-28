@@ -7,12 +7,7 @@ const CustomCellFormatter = ({value}) => {
   return <span>{numeral(value).format()}</span>
 }
 
-const columns = [
-  { key: "site", name: "Bookmaker", editable: false},
-  { key: "deposit", name: "Dépôt", editable: true, formatter : CustomCellFormatter},
-  { key: "balance", name: "Solde", editable: true, formatter : CustomCellFormatter},
-  { key: "withdrawal", name: "Retrait", editable: true, formatter : CustomCellFormatter}
-]
+
 
 const rows = [
   { site: 'JOA', deposit:75,balance: 69,withdrawal: 0},
@@ -27,15 +22,6 @@ const FEES = 97;
 
 numeral.defaultFormat('0,0[.]00 $');
 
-// const CustomCellRenderer = ({renderBaseCell, ...props}) => {
-//   const color = "green";
-//   //return <div style={{ color }}>{renderBaseCell({ ...props, isEditorEnabled: false})}</div>
-//   return <div style={{ color }}>{renderBaseCell(props)}</div>
-
-// }
-
-
-
 const CustomRowRenderer = ({ renderBaseRow, ...props }) => {
   if (props.idx === rows.length) {
     return <strong>{renderBaseRow(props)}</strong>;
@@ -47,6 +33,7 @@ const CustomRowRenderer = ({ renderBaseRow, ...props }) => {
 const checkIfNumber = (number) => {
   return (!number || number.match(/^\d{1,}(\.\d{0,2})?$/))
 }
+
 export default class BookmakerFundsTable extends React.Component {
   constructor (props) {
     super(props);
@@ -56,9 +43,16 @@ export default class BookmakerFundsTable extends React.Component {
       currentEarnings : 0,
       available : 0
     }
+
+    this.columns = [
+      { key: "site", name: "Bookmaker", editable: false},
+      { key: "deposit", name: "Dépôt", editable: (props.role === 'admin'), formatter : CustomCellFormatter},
+      { key: "balance", name: "Solde", editable: (props.role === 'admin'), formatter : CustomCellFormatter},
+      { key: "withdrawal", name: "Retrait", editable: (props.role === 'admin'), formatter : CustomCellFormatter}
+    ]
   }
 
-  checkCellEditable = ({ column, row }) => {
+  checkCellEditable = ({ row }) => {
     return (row.site !== 'TOTAL');
   };
   
@@ -68,6 +62,7 @@ export default class BookmakerFundsTable extends React.Component {
       //&& fromRow < this.state.rows.length && toRow < this.state.rows.length // avoid modification of 'TOTAL' row 
       ){ 
       this.setState(previousState => {
+        console.log(fromRow,toRow,updated);
         const rows = previousState.rows.slice();
         const total = { site: 'TOTAL', deposit: 0, balance: 0, withdrawal: 0}
         
@@ -97,7 +92,7 @@ export default class BookmakerFundsTable extends React.Component {
         <p><strong>Capital Initial : {numeral(INITIAL_BANKROLL).format()} </strong></p>
         
         <ReactDataGrid
-          columns={columns}
+          columns={this.columns}
           rowGetter = { (i) => {
             if (i < this.state.rows.length) {
               return this.state.rows[i];

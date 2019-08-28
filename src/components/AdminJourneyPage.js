@@ -11,9 +11,9 @@ const AdminJourneyPage = () => (
     <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
     <Link to="/admin/journey/1">Journey (vue Admin)</Link> -&nbsp;
     <Link to="/user/journey/1">Journey (vue User)</Link> -&nbsp;
-    <BookmakerFundsTable />
-    <JourneyConversation screen="admin"/>
-    <AddJourneyMessageForm screen="admin" />
+    <BookmakerFundsTable role="admin"/>
+    <JourneyConversation role="admin"/>
+    <AddJourneyMessageForm role="admin" />
 
   </div>
 )
