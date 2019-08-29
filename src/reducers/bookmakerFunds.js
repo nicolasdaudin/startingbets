@@ -1,7 +1,7 @@
 const bookmakerFundsReducerDefaultState = [];
 
 const DEFAULT_BOOKMAKER_FUNDS = [
-  { site: 'JOA', deposit:75,balance: 69,withdrawal: 0},
+  { site: 'JOA', deposit:75,balance: 73,withdrawal: 0},
   { site: 'Unibet', deposit:100,balance: 100,withdrawal: 0},
   
 ]
@@ -18,6 +18,7 @@ const computeTotal = (rows) => {
     total.balance = (parseFloat(total.balance) + parseFloat(rows[i].balance)).toFixed(2);
     total.withdrawal = (parseFloat(total.withdrawal) + parseFloat(rows[i].withdrawal)).toFixed(2);       
   }
+  return total;
 }
 
 const computeCurrentEarnings = (total) => {
@@ -44,8 +45,8 @@ export default (state = bookmakerFundsReducerDefaultState, action) => {
       }
     case 'UPDATE_BOOKMAKER_FUNDS':
       rows = state.rows.slice();
-      for (let i = action.bookmakerIndex; i <= action.bookmakerIndex ; i++){
-        rows[i] = { ...rows[i], ...action.updatedFunds};       
+      for (let i = action.index; i <= action.index ; i++){
+        rows[i] = { ...rows[i], ...action.funds};       
       }
       total = computeTotal(rows);
       currentEarnings = computeCurrentEarnings(total);

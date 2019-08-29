@@ -1,48 +1,29 @@
 import React, { useContext } from 'react';
+import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import numeral from 'numeral';
+import {updateBookmakerFunds} from '../actions/bookmakerFunds'
+import { throws } from 'assert';
 
 
 const CustomCellFormatter = ({value}) => {
   return <span>{numeral(value).format()}</span>
 }
 
-
-
-const rows = [
-  { site: 'JOA', deposit:75,balance: 69,withdrawal: 0},
-  { site: 'Unibet', deposit:100,balance: 100,withdrawal: 0},
-  
-]
-
-const total = { site: 'TOTAL', deposit: 175, balance: 169, withdrawal: 0}
-
 const INITIAL_BANKROLL = 175;
 const FEES = 97;
 
 numeral.defaultFormat('0,0[.]00 $');
 
-const CustomRowRenderer = ({ renderBaseRow, ...props }) => {
-  if (props.idx === rows.length) {
-    return <strong>{renderBaseRow(props)}</strong>;
-  } else {
-    return <div>{renderBaseRow(props)}</div>;
-  }
-};
 
 const checkIfNumber = (number) => {
   return (!number || number.match(/^\d{1,}(\.\d{0,2})?$/))
 }
 
-export default class BookmakerFundsTable extends React.Component {
+export  class BookmakerFundsTable extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {
-      rows : rows || [],
-      total : {site: 'TOTAL'},
-      currentEarnings : 0,
-      available : 0
-    }
+
 
     this.columns = [
       { key: "site", name: "Bookmaker", editable: false},
@@ -55,34 +36,20 @@ export default class BookmakerFundsTable extends React.Component {
   checkCellEditable = ({ row }) => {
     return (row.site !== 'TOTAL');
   };
+
+  getCustomRowRenderer = ({ renderBaseRow, ...props }) => {
+    if (props.idx === this.props.rows.length) {
+      return <strong>{renderBaseRow(props)}</strong>;
+    } else {
+      return <div>{renderBaseRow(props)}</div>;
+    }
+  };
   
 
   onGridRowsUpdated = ({ fromRow, toRow, updated}) => {   
     if (checkIfNumber(updated.deposit) && checkIfNumber(updated.balance) && checkIfNumber(updated.withdrawal) 
-      //&& fromRow < this.state.rows.length && toRow < this.state.rows.length // avoid modification of 'TOTAL' row 
       ){ 
-      this.setState(previousState => {
-        console.log(fromRow,toRow,updated);
-        const rows = previousState.rows.slice();
-        const total = { site: 'TOTAL', deposit: 0, balance: 0, withdrawal: 0}
-        
-        
-          for (let i = fromRow; i <= toRow ; i++){
-            rows[i] = { ...rows[i], ...updated};       
-          }
-
-          for (let i = 0; i < rows.length ; i++){
-            total.deposit = (parseFloat(total.deposit) + parseFloat(rows[i].deposit)).toFixed(2);
-            total.balance = (parseFloat(total.balance) + parseFloat(rows[i].balance)).toFixed(2);
-            total.withdrawal = (parseFloat(total.withdrawal) + parseFloat(rows[i].withdrawal)).toFixed(2);       
-          }
-
-          const currentEarnings = (parseFloat(total.withdrawal) - parseFloat(total.deposit) + parseFloat(total.balance) - parseFloat(FEES)).toFixed(2);
-          const available = (parseFloat(INITIAL_BANKROLL) - parseFloat(total.deposit) + parseFloat(total.withdrawal)).toFixed(2);
-          
-          console.log(currentEarnings);
-          return {rows,total,currentEarnings,available}
-      })
+      this.props.updateBookmakerFunds(fromRow,updated);
     };
   };
 
@@ -94,22 +61,38 @@ export default class BookmakerFundsTable extends React.Component {
         <ReactDataGrid
           columns={this.columns}
           rowGetter = { (i) => {
-            if (i < this.state.rows.length) {
-              return this.state.rows[i];
+            if (i < this.props.rows.length) {
+              return this.props.rows[i];
             } else {
-              return this.state.total;
+              return this.props.total;
             }
           }}
-          rowsCount = {this.state.rows.length + 1}
+          rowsCount = {this.props.rows.length + 1}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true}
-          rowRenderer={CustomRowRenderer}
+          rowRenderer={this.getCustomRowRenderer}
           onCheckCellIsEditable={this.checkCellEditable}
         />
-        <p><strong>Gains actuels (frais inclus {FEES}): {numeral(this.state.currentEarnings).format()} - Dispo: {numeral(this.state.available).format()}</strong></p>
+        <p><strong>Gains actuels (frais inclus {FEES}): {numeral(this.props.currentEarnings).format()} - Dispo: {numeral(this.props.available).format()}</strong></p>
         
       </div>
     );
   }
 
 }
+
+const mapStateToProps = (state,props) => {
+  return { 
+    rows : state.bookmakerFunds.rows,
+    total: state.bookmakerFunds.total,
+    currentEarnings : state.bookmakerFunds.currentEarnings,
+    available : state.bookmakerFunds.available
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  updateBookmakerFunds : (index,funds) => { dispatch(updateBookmakerFunds(index,funds))}
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(BookmakerFundsTable);
+

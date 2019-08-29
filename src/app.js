@@ -71,7 +71,7 @@ firebase.auth().onAuthStateChanged( (user) => {
 
     store.dispatch(login(user.uid));
     store.dispatch(setMessages());
-    
+    store.dispatch(setBookmakerFunds());
 
     renderApp();
     if (history.location.pathname === '/'){
