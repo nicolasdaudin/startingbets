@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
+
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import numeral from 'numeral';
-import {updateBookmakerFunds} from '../actions/bookmakerFunds'
-import { throws } from 'assert';
+import {startUpdateBookmakerData} from '../actions/bookmaker'
 
 
-const CustomCellFormatter = ({value}) => {
-  return <span>{numeral(value).format()}</span>
-}
 
 const INITIAL_BANKROLL = 175;
 const FEES = 97;
@@ -16,9 +13,31 @@ const FEES = 97;
 numeral.defaultFormat('0,0[.]00 $');
 
 
-const checkIfNumber = (number) => {
-  return (!number || number.match(/^\d{1,}(\.\d{0,2})?$/))
+const checkIfValidBookmakerUpdate = (updated) => {
+  return ((!updated.deposit || updated.deposit.match(/^\d{1,}(\.\d{0,2})?$/))
+    && (!updated.balance || updated.balance.match(/^\d{1,}(\.\d{0,2})?$/))
+    && (!updated.withdrawal || updated.withdrawal.match(/^\d{1,}(\.\d{0,2})?$/)))
 }
+
+const transformIntoNumber = (updated) => {
+  const newUpdated = {};
+  if (updated.deposit) {
+    newUpdated.deposit = parseFloat(updated.deposit,10) ; // * 100 because we use the cents in the display
+  }
+  if (updated.balance) {
+    newUpdated.balance = parseFloat(updated.balance,10) ;
+  }
+  if (updated.withdrawal) {
+    newUpdated.withdrawal = parseFloat(updated.withdrawal,10) ;
+  }
+  return newUpdated;
+}
+
+const CustomCellFormatter = ({value}) => {
+  return <span>{numeral(value).format()}</span>
+}
+
+
 
 export  class BookmakerFundsTable extends React.Component {
   constructor (props) {
@@ -47,27 +66,34 @@ export  class BookmakerFundsTable extends React.Component {
   
 
   onGridRowsUpdated = ({ fromRow, toRow, updated}) => {   
-    if (checkIfNumber(updated.deposit) && checkIfNumber(updated.balance) && checkIfNumber(updated.withdrawal) 
+    if (checkIfValidBookmakerUpdate(updated) 
       ){ 
-      this.props.updateBookmakerFunds(fromRow,updated);
+        
+      console.log('onGridRowsUpdated', updated);
+      this.props.startUpdateBookmakerData(fromRow,this.props.rows[fromRow].site,transformIntoNumber(updated));
     };
   };
 
   render () {
     return (
       <div>
+        <h3>Gains actuels</h3>
         <p><strong>Capital Initial : {numeral(INITIAL_BANKROLL).format()} </strong></p>
         
         <ReactDataGrid
           columns={this.columns}
           rowGetter = { (i) => {
-            if (i < this.props.rows.length) {
-              return this.props.rows[i];
+            if (this.props.rows) {
+              if (i < this.props.rows.length) {
+                return this.props.rows[i];
+              } else {
+                return this.props.total;
+              }
             } else {
-              return this.props.total;
+              return '';
             }
           }}
-          rowsCount = {this.props.rows.length + 1}
+          rowsCount = {(this.props.rows) ? this.props.rows.length + 1 : 0}
           onGridRowsUpdated={this.onGridRowsUpdated}
           enableCellSelect={true}
           rowRenderer={this.getCustomRowRenderer}
@@ -83,15 +109,15 @@ export  class BookmakerFundsTable extends React.Component {
 
 const mapStateToProps = (state,props) => {
   return { 
-    rows : state.bookmakerFunds.rows,
-    total: state.bookmakerFunds.total,
-    currentEarnings : state.bookmakerFunds.currentEarnings,
-    available : state.bookmakerFunds.available
+    rows : state.bookmaker.rows,
+    total: state.bookmaker.total,
+    currentEarnings : state.bookmaker.currentEarnings,
+    available : state.bookmaker.available
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  updateBookmakerFunds : (index,funds) => { dispatch(updateBookmakerFunds(index,funds))}
+  startUpdateBookmakerData : (index,site,data) => { dispatch(startUpdateBookmakerData(index,site,data))}
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(BookmakerFundsTable);

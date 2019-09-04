@@ -1,10 +1,10 @@
-const bookmakerFundsReducerDefaultState = [];
+const bookmakerReducerDefaultState = [];
 
-const DEFAULT_BOOKMAKER_FUNDS = [
-  { site: 'JOA', deposit:75,balance: 73,withdrawal: 0},
-  { site: 'Unibet', deposit:100,balance: 100,withdrawal: 0},
-  
+const DEFAULT_BOOKMAKER_DATA = [
+  { site: 'JOA', deposit:75,balance: 73,withdrawal: 0, validationDate: '01/05', validated:'ok', link:''},
+  { site: 'Unibet', deposit:100,balance: 100,withdrawal: 0, validationDate: '11/05', validated:'ok', link:'ABC'}
 ]
+
 
 const FEES = 97;
 const INITIAL_BANKROLL = 175;
@@ -29,10 +29,10 @@ const computeAvailable = (total) => {
   return (parseFloat(INITIAL_BANKROLL) - parseFloat(total.deposit) + parseFloat(total.withdrawal)).toFixed(2);
 }
 
-export default (state = bookmakerFundsReducerDefaultState, action) => {
+export default (state = bookmakerReducerDefaultState, action) => {
   switch (action.type) {    
-    case 'SET_BOOKMAKER_FUNDS':
-      let rows = DEFAULT_BOOKMAKER_FUNDS || [];
+    case 'SET_BOOKMAKER_DATA':
+      let rows = action.bookmakerData || DEFAULT_BOOKMAKER_DATA;
       let total = computeTotal(rows);
       let currentEarnings = computeCurrentEarnings(total);
       let available = computeAvailable(total);
@@ -43,11 +43,9 @@ export default (state = bookmakerFundsReducerDefaultState, action) => {
         currentEarnings,
         available
       }
-    case 'UPDATE_BOOKMAKER_FUNDS':
+    case 'UPDATE_BOOKMAKER_DATA':
       rows = state.rows.slice();
-      for (let i = action.index; i <= action.index ; i++){
-        rows[i] = { ...rows[i], ...action.funds};       
-      }
+      rows[action.index] = { ...rows[action.index], ...action.bookmakerData};   
       total = computeTotal(rows);
       currentEarnings = computeCurrentEarnings(total);
       available = computeAvailable(total);
@@ -58,7 +56,7 @@ export default (state = bookmakerFundsReducerDefaultState, action) => {
         currentEarnings,
         available
       }
-    
+   
     default:
       return state;
   }

@@ -8,8 +8,27 @@
   justify-content: flex-end;
 }
 
+.message-container{
+  display:flex;
+  flex-direction:column;
+  margin:10px 10px;
+}
+
 .journey-container {
   width: 60%;
   margin: auto;
+}
 
+.message-textarea {
+  width: 100%;
+  height: 200px;
+}
+
+.message-content {
+  margin:0 2px 0 0;
+}
+
+.message-info {  
+  margin:0;
+  font-size: $font-size-extra-small;
 }

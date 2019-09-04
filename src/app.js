@@ -11,8 +11,8 @@ import moment from 'moment';
 import numeral from 'numeral';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
-import {setMessages} from './actions/conversation.js'
-import {setBookmakerFunds} from './actions/bookmakerFunds.js';
+import {startSetMessages} from './actions/conversation.js'
+import {startSetBookmakerData} from './actions/bookmaker.js';
 
 moment.locale('fr');
 
@@ -70,8 +70,8 @@ firebase.auth().onAuthStateChanged( (user) => {
     console.log('user logged in');
 
     store.dispatch(login(user.uid));
-    store.dispatch(setMessages());
-    store.dispatch(setBookmakerFunds());
+    store.dispatch(startSetMessages());
+    store.dispatch(startSetBookmakerData());
 
     renderApp();
     if (history.location.pathname === '/'){
