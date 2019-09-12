@@ -35,6 +35,7 @@
     "react": "16.8.0",
     "react-addons-shallow-compare": "15.6.0",
     "react-data-grid": "^6.1.0",
+    "react-data-grid-addons": "^6.1.0",
     "react-dates": "12.7.0",
     "react-dom": "16.8.0",
     "react-modal": "2.2.2",

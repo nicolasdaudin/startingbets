@@ -98,6 +98,7 @@ export  class BookmakerFundsTable extends React.Component {
           enableCellSelect={true}
           rowRenderer={this.getCustomRowRenderer}
           onCheckCellIsEditable={this.checkCellEditable}
+          minHeight={200}
         />
         <p><strong>Gains actuels (frais inclus {FEES}): {numeral(this.props.currentEarnings).format()} - Dispo: {numeral(this.props.available).format()}</strong></p>
         

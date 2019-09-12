@@ -39,7 +39,8 @@ export class BookmakerActivationTable extends React.Component {
           rowGetter = { (i) => { return (this.props.rows ? this.props.rows[i] : '')} }            
           rowsCount = {(this.props.rows) ? this.props.rows.length : 0}
           onGridRowsUpdated = {this.onGridRowsUpdated}
-          enableCellSelect={true}          
+          enableCellSelect={true}  
+          minHeight={200}        
         />          
       </div>
     )

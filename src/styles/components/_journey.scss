@@ -11,7 +11,7 @@
 .message-container{
   display:flex;
   flex-direction:column;
-  margin:10px 10px;
+  margin-bottom:10px;
 }
 
 .journey-container {
@@ -26,9 +26,14 @@
 
 .message-content {
   margin:0 2px 0 0;
+  white-space: pre; 
 }
 
 .message-info {  
   margin:0;
   font-size: $font-size-extra-small;
+}
+
+.earnings-calculation-container {
+  text-align:center;
 }

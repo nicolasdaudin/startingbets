@@ -13,6 +13,7 @@ import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
 import {startSetMessages} from './actions/conversation.js'
 import {startSetBookmakerData} from './actions/bookmaker.js';
+import { setEarningsData } from './actions/earnings.js';
 
 moment.locale('fr');
 
@@ -72,6 +73,7 @@ firebase.auth().onAuthStateChanged( (user) => {
     store.dispatch(login(user.uid));
     store.dispatch(startSetMessages());
     store.dispatch(startSetBookmakerData());
+    store.dispatch(setEarningsData());
 
     renderApp();
     if (history.location.pathname === '/'){

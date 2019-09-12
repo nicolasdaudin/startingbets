@@ -9,7 +9,7 @@ export const startSetMessages = () => {
   return (dispatch, getState) => {
     //const uid = getState().auth.uid;
     const uid = 2;
-    return db.ref(`users/${uid}/messages`).orderByChild('date').once('value').then((snapshot) => {      
+    return db.ref(`users/${uid}/messages`).orderByChild('date').limitToLast(10).once('value').then((snapshot) => {      
       const messages = [];
       snapshot.forEach((childSnapshot) => {        
         messages.push({
