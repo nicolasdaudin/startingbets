@@ -4,8 +4,9 @@ import thunk from 'redux-thunk';
 //import filtersReducer from '../reducers/filters';
 import authReducer from '../reducers/auth';
 import conversationReducer from '../reducers/conversation';
-import bookmakerReducer from '../reducers/bookmaker';
+import bookmakersReducer from '../reducers/bookmakers';
 import earningsReducer from '../reducers/earnings';
+import usersReducer from '../reducers/users';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; 
 
 export default () => {
@@ -15,8 +16,9 @@ export default () => {
       //filters: filtersReducer,
       auth: authReducer,
       conversation:conversationReducer,
-      bookmaker:bookmakerReducer,
-      earnings:earningsReducer
+      bookmakers:bookmakersReducer,
+      earnings:earningsReducer,
+      users:usersReducer
 
     }),
     composeEnhancers(applyMiddleware(thunk))

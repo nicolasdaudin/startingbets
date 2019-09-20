@@ -38,12 +38,13 @@ export  class AddJourneyMessageForm extends React.Component {
   }
 
   onChooseAction = (e) => {    
-    const id = e.target.id;    
+    const id = e.target.id; 
     this.setState(() => (
       {
         message : USER_ACTIONS[id].default_msg,
         type : USER_ACTIONS[id].type
       }));
+    this.props.updateBetType(USER_ACTIONS[id].type);
   }
   
   render() {

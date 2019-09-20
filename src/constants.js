@@ -1,3 +1,10 @@
+export const JOURNEY_PROGRAM_TYPES = [
+  {type:'350-FR',label:'Programme France 350 euros 🇫🇷',default_goal:350},
+  {type:'400-BE',label:'Programme Belgique 400 euros 🇧🇪',default_goal:400},
+  {type:'400-ES',label:'Programme Espagne 400 euros 🇪🇸',default_goal:400}
+]
+
+
 export const USER_ACTIONS = [
   {type:'simple',label:"Simple message",default_msg:"Ceci est un simple message..."}, // default message
   {type:'bet',label:"Prise de paris",default_msg:

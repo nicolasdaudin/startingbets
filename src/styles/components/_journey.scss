@@ -11,13 +11,27 @@
 .message-container{
   display:flex;
   flex-direction:column;
-  margin-bottom:10px;
+  margin-bottom:$s-size;
 }
 
-.journey-container {
-  width: 60%;
-  margin: auto;
+.conversation-container{
+  padding:$s-size;
+  border-right: 3px solid $grey;
+  margin:$s-size;
 }
+
+.bookmaker-data-container{
+  padding:$s-size;
+  margin:$s-size; 
+} 
+
+.journey-container {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+}
+
 
 .message-textarea {
   width: 100%;
@@ -31,9 +45,17 @@
 
 .message-info {  
   margin:0;
-  font-size: $font-size-extra-small;
+  font-size: $font-size-small;
 }
 
 .earnings-calculation-container {
   text-align:center;
+}
+
+.journey-item {
+  font-size: $font-size-normal
+}
+
+.testrow {
+  color:red;
 }

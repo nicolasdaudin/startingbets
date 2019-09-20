@@ -6,14 +6,18 @@ import BookmakerFundsTable from './BookmakerFundsTable';
 
 
 const UserJourneyPage = () => (
-  <div className='journey-container' >
+  <div>
     <h2>Programme Journey vue USER</h2>
     <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
     <Link to="/admin/journey/1">Journey (vue Admin)</Link> -&nbsp;
     <Link to="/user/journey/1">Journey (vue User)</Link> -&nbsp;
-    <BookmakerFundsTable role="user"/>
-    <JourneyConversation role="user"/>
-    <AddJourneyMessageForm role="user" />
+    <div className='journey-container'>
+      <div>
+        <JourneyConversation role="user"/>
+        <AddJourneyMessageForm role="user" />
+      </div>
+      <BookmakerFundsTable role="user"/>
+    </div>   
   </div>
 )
 

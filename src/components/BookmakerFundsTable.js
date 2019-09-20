@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import numeral from 'numeral';
-import {startUpdateBookmakerData} from '../actions/bookmaker'
+import {startUpdateBookmakerData} from '../actions/bookmakers';
 
 
 
@@ -110,10 +110,10 @@ export  class BookmakerFundsTable extends React.Component {
 
 const mapStateToProps = (state,props) => {
   return { 
-    rows : state.bookmaker.rows,
-    total: state.bookmaker.total,
-    currentEarnings : state.bookmaker.currentEarnings,
-    available : state.bookmaker.available
+    rows : state.bookmakers.rows,
+    total: state.bookmakers.total,
+    currentEarnings : state.bookmakers.currentEarnings,
+    available : state.bookmakers.available
   }
 }
 

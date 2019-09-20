@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
-import {startUpdateBookmakerData} from '../actions/bookmaker'
+import {startUpdateBookmakerData} from '../actions/bookmakers'
 
 const checkIfValidBookmakerUpdate = (updated) => {
   return true;
@@ -51,7 +51,7 @@ export class BookmakerActivationTable extends React.Component {
 
 const mapStateToProps = (state,props) => {
   return { 
-    rows : state.bookmaker.rows
+    rows : state.bookmakers.rows
   }
 }
 

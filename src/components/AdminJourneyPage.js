@@ -7,21 +7,39 @@ import BookmakerActivationTable from './BookmakerActivationTable';
 import EarningsCalculationTable from './EarningsCalculationTable';
 
 
-const AdminJourneyPage = () => (
-  <div className='journey-container' >
-    <h2>Programme Journey vue ADMIN</h2>
-    <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
-    <Link to="/admin/journey/1">Journey (vue Admin)</Link> -&nbsp;
-    <Link to="/user/journey/1">Journey (vue User)</Link> -&nbsp;
-    <EarningsCalculationTable role="admin"/>
-    <BookmakerFundsTable role="admin"/>
-    <BookmakerActivationTable role="admin"/>
-    <JourneyConversation role="admin"/>
-    <AddJourneyMessageForm role="admin" />
+export default class AdminJourneyPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      betType : 'simple'
+    }
+  }
 
-  </div>
-)
+  updateBetType = (betType) => {
+    this.setState({
+      betType
+    });
+  }
 
-
-
-export default AdminJourneyPage;
+  render () {
+    return (
+      <div>
+        <h2>Programme Journey vue ADMIN</h2>
+        <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
+        <Link to="/admin/journey/1">Journey (vue Admin)</Link> -&nbsp;
+        <Link to="/user/journey/1">Journey (vue User)</Link> -&nbsp;    
+        <div className='journey-container'>
+          <div className='conversation-container'>
+            <JourneyConversation role="admin"/>
+            <AddJourneyMessageForm role="admin" updateBetType={this.updateBetType}/>
+          </div>
+          <div className='bookmaker-data-container'>
+            <BookmakerFundsTable role="admin"/>
+            <BookmakerActivationTable role="admin"/>        
+            {this.state.betType === 'bet' && <EarningsCalculationTable role="admin"/>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

@@ -1,4 +1,4 @@
-const bookmakerReducerDefaultState = [];
+const bookmakersReducerDefaultState = [];
 
 const DEFAULT_BOOKMAKER_DATA = [
   { site: 'JOA', deposit:75,balance: 73,withdrawal: 0, validationDate: '01/05', validated:'ok', link:''},
@@ -29,7 +29,7 @@ const computeAvailable = (total) => {
   return (parseFloat(INITIAL_BANKROLL) - parseFloat(total.deposit) + parseFloat(total.withdrawal)).toFixed(2);
 }
 
-export default (state = bookmakerReducerDefaultState, action) => {
+export default (state = bookmakersReducerDefaultState, action) => {
   switch (action.type) {    
     case 'SET_BOOKMAKER_DATA':
       let rows = action.bookmakerData || DEFAULT_BOOKMAKER_DATA;

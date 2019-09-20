@@ -12,8 +12,10 @@ import numeral from 'numeral';
 import {firebase} from './firebase/firebase';
 import LoadingPage from './components/LoadingPage';
 import {startSetMessages} from './actions/conversation.js'
-import {startSetBookmakerData} from './actions/bookmaker.js';
+import {startSetBookmakerData} from './actions/bookmakers.js';
 import { setEarningsData } from './actions/earnings.js';
+import {startSetUsers} from './actions/users.js';
+
 
 moment.locale('fr');
 
@@ -43,7 +45,7 @@ numeral.locale('fr');
 const store = configureStore();
 //console.log('testing sourcemaps');
 const jsx = (
-  <Provider store={store}>
+  <Provider store={store}>    
     <AppRouter />
   </Provider>
 );
@@ -74,6 +76,7 @@ firebase.auth().onAuthStateChanged( (user) => {
     store.dispatch(startSetMessages());
     store.dispatch(startSetBookmakerData());
     store.dispatch(setEarningsData());
+    store.dispatch(startSetUsers(false));
 
     renderApp();
     if (history.location.pathname === '/'){
