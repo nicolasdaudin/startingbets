@@ -5,10 +5,10 @@ export const setMessages = (messages) => ({
   messages
 });
 
-export const startSetMessages = () => {
+export const startSetMessages = (uid) => {
   return (dispatch, getState) => {
     //const uid = getState().auth.uid;
-    const uid = 2;
+    //const uid = 2;
     return db.ref(`users/${uid}/messages`).orderByChild('date').limitToLast(10).once('value').then((snapshot) => {      
       const messages = [];
       snapshot.forEach((childSnapshot) => {        
@@ -29,12 +29,12 @@ export const addMessage = (message) => ({
   message
 })
 
-export const startAddMessage = (message) => {
+export const startAddMessage = (message,uid) => {
   return (dispatch,getState) => {
     //const uid = getState().auth.uid;
-    const uid = 2;
+    //const uid = 2;
     return db.ref(`users/${uid}/messages`).push(message).then((ref) => {
-      dispatch (addMessage(message));
+      dispatch (addMessage(message,uid));
       
     });
   }

@@ -22,9 +22,9 @@ const AppRouter = () => (
         <PublicRoute path='/' component={LoginPage} exact={true}/>
         <PrivateRoute path='/admin/dashboard' component={AdminDashboardPage}/> 
         <PrivateRoute path='/admin/user/create' component={AddUserPage} />
-        <PrivateRoute path='/admin/user/edit/:id' component={EditUserPage} />      
-        <PrivateRoute path='/user/journey/1' component={UserJourneyPage}/>
-        <PrivateRoute path='/admin/journey/1' component={AdminJourneyPage}/>        
+        <PrivateRoute path='/admin/user/edit/:userid' component={EditUserPage} />      
+        <PrivateRoute path='/user/journey/:userid' component={UserJourneyPage}/>
+        <PrivateRoute path='/admin/journey/:userid' component={AdminJourneyPage}/>        
         <Route component={NotFoundPage} />      
       </Switch>
     </div>

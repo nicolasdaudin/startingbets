@@ -1,10 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {startSetMessages} from '../actions/conversation';
+
 import JourneyMessage from './JourneyMessage';
 
 export class JourneyConversation extends React.Component {
   constructor(props) {
     super(props);
+
+    this.props.startSetMessages(this.props.userid);
+
+
 
   }
 
@@ -30,6 +36,11 @@ const mapStateToProps = (state) => ({
   messages : state.conversation.messages
 })
 
-const ConnectedJourneyConversation = connect(mapStateToProps)(JourneyConversation);
+
+const mapDispatchToProps = (dispatch) => ({
+  startSetMessages : (userid) => { dispatch(startSetMessages(userid))}
+});
+
+const ConnectedJourneyConversation = connect(mapStateToProps,mapDispatchToProps)(JourneyConversation);
 
 export default ConnectedJourneyConversation;

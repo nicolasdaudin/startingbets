@@ -42,7 +42,7 @@ export class EditUserPage extends React.Component {
 
 const mapStateToProps = (state,props) => {
   return {
-    user : state.users.find( (user) => (user.id === props.match.params.id))
+    user : state.users.find( (user) => (user.id === props.match.params.userid))
   }
 }
 

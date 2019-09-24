@@ -73,8 +73,8 @@ firebase.auth().onAuthStateChanged( (user) => {
     //console.log('user logged in');
 
     store.dispatch(login(user.uid));
-    store.dispatch(startSetMessages());
-    store.dispatch(startSetBookmakerData());
+    //store.dispatch(startSetMessages());
+    //store.dispatch(startSetBookmakerData());
     store.dispatch(setEarningsData());
     store.dispatch(startSetUsers(false));
 

@@ -9,8 +9,8 @@ const UserJourneyPage = () => (
   <div>
     <h2>Programme Journey vue USER</h2>
     <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
-    <Link to="/admin/journey/1">Journey (vue Admin)</Link> -&nbsp;
-    <Link to="/user/journey/1">Journey (vue User)</Link> -&nbsp;
+    <Link to="/admin/journey/2">Journey (vue Admin)</Link> -&nbsp;
+    <Link to="/user/journey/2">Journey (vue User)</Link> -&nbsp;
     <div className='journey-container'>
       <div>
         <JourneyConversation role="user"/>

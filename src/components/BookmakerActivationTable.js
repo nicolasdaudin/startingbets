@@ -25,7 +25,7 @@ export class BookmakerActivationTable extends React.Component {
       ){ 
         
       console.log('onGridRowsUpdated', updated);
-      this.props.startUpdateBookmakerData(fromRow,this.props.rows[fromRow].site,updated);
+      this.props.startUpdateBookmakerData(this.props.userid,fromRow,this.props.rows[fromRow].site,updated);
 
     };
   };
@@ -40,7 +40,7 @@ export class BookmakerActivationTable extends React.Component {
           rowsCount = {(this.props.rows) ? this.props.rows.length : 0}
           onGridRowsUpdated = {this.onGridRowsUpdated}
           enableCellSelect={true}  
-          minHeight={200}        
+          minHeight={(this.props.rows) ? (this.props.rows.length + 2) * 37 : 200}        
         />          
       </div>
     )
@@ -56,7 +56,7 @@ const mapStateToProps = (state,props) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startUpdateBookmakerData : (index,site,data) => { dispatch(startUpdateBookmakerData(index,site,data))}
+  startUpdateBookmakerData : (userid,index,site,data) => { dispatch(startUpdateBookmakerData(userid,index,site,data))}
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(BookmakerActivationTable);

@@ -16,8 +16,8 @@ export  class AddJourneyMessageForm extends React.Component {
       origin: props.role,
       type: null
     }
-
   }
+
 
   onMessageChange = (e) => {
     const message = e.target.value;
@@ -31,7 +31,7 @@ export  class AddJourneyMessageForm extends React.Component {
       origin : this.state.origin,
       type: this.state.type || USER_ACTIONS[0].type,
       date: moment().valueOf()
-    })
+    },this.props.userid)
     
     this.setState(() => ({message : '',type: null}));
     
@@ -69,7 +69,7 @@ export  class AddJourneyMessageForm extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startAddMessage : (message) => { dispatch(startAddMessage(message))}
+  startAddMessage : (message,userid) => { dispatch(startAddMessage(message,userid))}
 });
 
 export default connect(null,mapDispatchToProps)(AddJourneyMessageForm)

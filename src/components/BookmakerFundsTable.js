@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactDataGrid from 'react-data-grid';
 import numeral from 'numeral';
-import {startUpdateBookmakerData} from '../actions/bookmakers';
+import {startUpdateBookmakerData,startSetBookmakerData } from '../actions/bookmakers';
 
 
 
@@ -43,6 +43,7 @@ export  class BookmakerFundsTable extends React.Component {
   constructor (props) {
     super(props);
 
+    this.props.startSetBookmakerData(this.props.userid);
 
     this.columns = [
       { key: "site", name: "Bookmaker", editable: false},
@@ -70,7 +71,7 @@ export  class BookmakerFundsTable extends React.Component {
       ){ 
         
       console.log('onGridRowsUpdated', updated);
-      this.props.startUpdateBookmakerData(fromRow,this.props.rows[fromRow].site,transformIntoNumber(updated));
+      this.props.startUpdateBookmakerData(this.props.userid,fromRow,this.props.rows[fromRow].site,transformIntoNumber(updated));
     };
   };
 
@@ -98,7 +99,7 @@ export  class BookmakerFundsTable extends React.Component {
           enableCellSelect={true}
           rowRenderer={this.getCustomRowRenderer}
           onCheckCellIsEditable={this.checkCellEditable}
-          minHeight={200}
+          minHeight={(this.props.rows) ? (this.props.rows.length + 2) * 37 : 200}
         />
         <p><strong>Gains actuels (frais inclus {FEES}): {numeral(this.props.currentEarnings).format()} - Dispo: {numeral(this.props.available).format()}</strong></p>
         
@@ -118,7 +119,8 @@ const mapStateToProps = (state,props) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startUpdateBookmakerData : (index,site,data) => { dispatch(startUpdateBookmakerData(index,site,data))}
+  startUpdateBookmakerData : (userid,index,site,data) => { dispatch(startUpdateBookmakerData(userid,index,site,data))},
+  startSetBookmakerData : (userid) => { dispatch(startSetBookmakerData(userid))}
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(BookmakerFundsTable);
