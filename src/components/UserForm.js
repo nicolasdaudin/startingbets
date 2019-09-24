@@ -11,13 +11,13 @@ export default class UserForm extends React.Component {
   constructor(props) {
     super(props);
 
-    let bookmakers = {};
-    if (props.user) { 
-      bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user.bookmakers.hasOwnProperty(bookmaker) }),{});   
-    } else {
-      bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: true }),{});
-    }
-    console.log(bookmakers);
+    // let bookmakers = {};
+    // if (props.user) { 
+    //   bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user.bookmakers.hasOwnProperty(bookmaker)}),{})  
+    // } else {
+    //   bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: true }),{});
+    // }
+    // console.log(bookmakers);
 
     this.state = {
       name : props.user ? props.user.name : '',
@@ -25,7 +25,7 @@ export default class UserForm extends React.Component {
       programType : props.user ? props.user.programType : JOURNEY_PROGRAM_TYPES[0].type,
       goal : props.user ? (props.user.goal).toString() : '',
       //bookmakers : props.user ? props.user.bookmakers : '',
-      bookmakers : bookmakers,
+      bookmakers : BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user ? props.user.bookmakers.hasOwnProperty(bookmaker) : true}),{}),
       programBeginDate : props.user ? moment(props.user.programBeginDate) : moment(),
       calendarFocused: false,
       disableFields: !!props.user ? "disabled" : "",
