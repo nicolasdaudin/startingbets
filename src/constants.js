@@ -2,8 +2,28 @@ export const JOURNEY_PROGRAM_TYPES = [
   {type:'350-FR',label:'Programme France 350 euros 🇫🇷',default_goal:350},
   {type:'400-BE',label:'Programme Belgique 400 euros 🇧🇪',default_goal:400},
   {type:'400-ES',label:'Programme Espagne 400 euros 🇪🇸',default_goal:400}
-]
+];
 
+export const DEFAULT_BOOKMAKER_DATA = { deposit : 0, balance: 0, withdrawal:0, validationDate : '', validated: '', link: ''}
+
+
+// export const BOOKMAKERS = [
+//   {id:"joa",name:"JOA Online", country:"fr"},
+//   {id:"unibet",name:"Unibet", country:"fr"},
+//   {id:"zebet",name:"Zebet", country:"fr"},
+//   {id:"netbet",name:"Netbet", country:"fr"}, 
+//   {id:"pmu",name:"PMU", country:"fr"},
+//   {id:"bwin",name:"Bwin", country:"fr"},
+//   {id:"parionsweb",name:"Parions Web", country:"fr"},
+//   {id:"betclic",name:"Betclic", country:"fr"},
+//   {id:"winamax",name:"Winamax", country:"fr"},
+//   {id:"genybet",name:"Genybet", country:"fr"},
+//   {id:"francepari",name:"France Pari", country:"fr"}
+// ]
+
+export const BOOKMAKERS = [
+  "JOA Online", "Unibet","Zebet","Netbet", "PMU", "Bwin", "Parions Web", "Betclic", "Winamax", "Genybet", "France Pari"
+]
 
 export const USER_ACTIONS = [
   {type:'simple',label:"Simple message",default_msg:"Ceci est un simple message..."}, // default message

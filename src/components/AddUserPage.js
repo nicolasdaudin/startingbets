@@ -7,7 +7,7 @@ import moment from 'moment'
 export  class AddUserPage extends React.Component {
   onSubmit = (user) => {
       this.props.startAddUser(user);
-      console.log('user created at',moment(user.programBeginDate).format("Do MMMM YYYY"))
+      //console.log('user created at',moment(user.programBeginDate).format("Do MMMM YYYY"))
       this.props.history.push('/');
   }
 

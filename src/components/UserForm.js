@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {SingleDatePicker} from 'react-dates';
 import {JOURNEY_PROGRAM_TYPES} from '../constants.js';
+import {BOOKMAKERS} from '../constants.js';
 
 
 
@@ -10,12 +11,21 @@ export default class UserForm extends React.Component {
   constructor(props) {
     super(props);
 
+    let bookmakers = {};
+    if (props.user) { 
+      bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user.bookmakers.hasOwnProperty(bookmaker) }),{});   
+    } else {
+      bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: true }),{});
+    }
+    console.log(bookmakers);
+
     this.state = {
       name : props.user ? props.user.name : '',
       email : props.user ? props.user.email : '',
       programType : props.user ? props.user.programType : JOURNEY_PROGRAM_TYPES[0].type,
       goal : props.user ? (props.user.goal).toString() : '',
-      bookmakers : props.user ? props.user.bookmakers : '',
+      //bookmakers : props.user ? props.user.bookmakers : '',
+      bookmakers : bookmakers,
       programBeginDate : props.user ? moment(props.user.programBeginDate) : moment(),
       calendarFocused: false,
       disableFields: !!props.user ? "disabled" : "",
@@ -41,8 +51,15 @@ export default class UserForm extends React.Component {
   } 
 
   onBookmakersChange = (e) => {
-    const bookmakers = e.target.value;
-    this.setState(() => ({bookmakers} ));
+    const bookmaker = e.target.value;
+    this.setState((prevState) => { 
+      const obj = { bookmakers : {
+        ...prevState.bookmakers,
+        [bookmaker] : !prevState.bookmakers[bookmaker]
+      }}
+      return obj;
+    });
+
   } 
   
   onGoalChange = (e) => {
@@ -67,25 +84,33 @@ export default class UserForm extends React.Component {
   onSubmit= (e) => {
     e.preventDefault();
 
-    if (!this.state.name || !this.state.email || !this.state.bookmakers || !this.state.goal || !this.state.programType){
-      this.setState(() => ({error: `Vous devez renseigner le nom, l'email, les bookies autorisés, l'objectif de gain, et le type de programme`}));
 
+    if (!this.state.name || !this.state.email || !Object.values(this.state.bookmakers).find(checked => checked)   || !this.state.goal || !this.state.programType){
+      this.setState(() => ({error: `Vous devez renseigner le nom, l'email, l'objectif de gain, le type de programme et au moins cocher un bookmaker`}));
+
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email)){ 
+      this.setState(() => ({error : `L'email n'est pas valide`}));      
     } else {
       this.setState(() => ({error : ''}));
-      console.log('user disabled ',this.state.disabled);
-      this.props.onSubmit({
+
+      let user = {  
         name:this.state.name,
         email:this.state.email,
-        programType:this.state.programType,
-        goal:parseFloat(this.state.goal,10),
-        disabled:this.state.disabled,
-        bookmakers:this.state.bookmakers,
-        programBeginDate:this.state.programBeginDate.valueOf() // la valeur en milliseconds
-      });
+        disabled:this.state.disabled        
+      };
+      if (!this.state.disableFields) { 
+        // creation mode
+        // we also add goal, programType, programBeginDate, bookmakers
+        user = {
+          ...user,
+          programType:this.state.programType,
+          goal:parseFloat(this.state.goal,10),
+          bookmakers:this.state.bookmakers,
+          programBeginDate:this.state.programBeginDate.valueOf() // la valeur en milliseconds
+        }
+      }
+      this.props.onSubmit(user);
     }
-
-    
-
   }
 
   render () {
@@ -124,14 +149,24 @@ export default class UserForm extends React.Component {
           value={this.state.goal}
           onChange={this.onGoalChange}
         />
-        <input 
-          type="text" 
-          disabled={this.state.disableFields}
-          placeholder="Bookmakers autorisés" 
-          className="text-input"
-          value={this.state.bookmakers}
-          onChange={this.onBookmakersChange}
-        />
+        
+        <label>Bookmakers autorisés</label>
+        <div>          
+          {BOOKMAKERS.map((bookmaker) => { 
+            return (
+              <label key={bookmaker}>
+                <input                               
+                  type="checkbox" 
+                  disabled={this.state.disableFields}
+                  className="bookmaker-checkbox"
+                  checked={this.state.bookmakers[bookmaker]}
+                  value={bookmaker}
+                  onChange={this.onBookmakersChange}
+                />
+                <span>{bookmaker}</span>
+              </label>
+            )})}
+        </div>
         <label>Date de début de programme</label>
         <SingleDatePicker 
           date={this.state.programBeginDate}

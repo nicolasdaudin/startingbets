@@ -55,7 +55,7 @@ ReactDOM.render(<LoadingPage />,document.getElementById('app'));
 let hasRendered = false;
 
 const renderApp = () => {
-  console.log('calling renderApp - hasRendered',hasRendered)
+  //console.log('calling renderApp - hasRendered',hasRendered)
   if (!hasRendered){
     ReactDOM.render(jsx ,document.getElementById('app'));
     hasRendered = true;
@@ -70,7 +70,7 @@ firebase.auth().onAuthStateChanged( (user) => {
   // thats why we want to redirect him to dashboard if he was in the login page, otherwise we don't redirect him
   if (user) { 
     // user logged in
-    console.log('user logged in');
+    //console.log('user logged in');
 
     store.dispatch(login(user.uid));
     store.dispatch(startSetMessages());

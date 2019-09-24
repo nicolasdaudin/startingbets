@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import db from '../firebase/firebase';
-
+import {DEFAULT_BOOKMAKER_DATA} from '../constants';
 
 export const addUser = (user) => ({
   type: 'ADD_USER',
@@ -9,6 +9,15 @@ export const addUser = (user) => ({
 
 export const startAddUser = (user) => {
   return (dispatch, getState) => {
+    //console.log('user to be added',user);
+    const bookmakersObject = [];
+    Object.keys(user.bookmakers).forEach(bookmaker => {
+      //console.log(bookmaker)
+      if (user.bookmakers[bookmaker]) {
+        bookmakersObject[bookmaker] = DEFAULT_BOOKMAKER_DATA;
+      }
+    });
+    user.bookmakers = bookmakersObject;
     return db.ref(`users`).push(user).then((ref) => {
       dispatch (addUser({
         id:ref.key,
@@ -65,7 +74,7 @@ export const startSetUsers = (showDisabled) => {
           id:childSnapshot.key,
           ...childSnapshot.val()
         })
-        console.log(childSnapshot.key, childSnapshot.val())
+        //console.log(childSnapshot.key, childSnapshot.val())
       });
 
       dispatch(setUsers(users));
