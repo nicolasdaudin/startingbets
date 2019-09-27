@@ -15,11 +15,11 @@ export class UserJourneyPage extends React.Component {
   render () {
     return (
       <div>
-        <h2>Programme Journey vue USER</h2>
+        <h2>Programme vue USER</h2>
         <h3>Nom: {this.props.user.name} - Email: {this.props.user.email}</h3>
         <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
-        <Link to="/admin/journey/2">Journey (vue Admin)</Link> -&nbsp;
-        <Link to="/user/journey/2">Journey (vue User)</Link> -&nbsp;
+        <Link to={`/admin/journey/${this.props.user.id}`}>Programme (vue Admin)</Link> -&nbsp;
+        <Link to={`/user/journey/${this.props.user.id}`}>Programme (vue User)</Link> -&nbsp;
         <div className='journey-container'>
           <div>
             <JourneyConversation userid={this.props.user.id} role="user"/>

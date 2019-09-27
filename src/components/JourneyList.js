@@ -46,8 +46,8 @@ export class JourneyList extends React.Component {
                 <TableCell>Date dernière action</TableCell>
                 <TableCell>Objectif</TableCell>
                 <TableCell>Distance Objectif</TableCell>
-                <TableCell>Voir programme (vue Admin) OLD /admin/journey/1</TableCell>
-                <TableCell>Voir programme (vue Membre) OLD /user/journey/1</TableCell>
+                <TableCell>Voir programme (vue Admin)</TableCell>
+                <TableCell>Voir programme (vue Membre)</TableCell>
                 <TableCell>Éditer/Supprimer</TableCell>
               </TableRow>
             </TableHead>
@@ -62,8 +62,8 @@ export class JourneyList extends React.Component {
                   <TableCell>{journey.lastActionDate}</TableCell>
                   <TableCell>{journey.goal} €</TableCell>
                   <TableCell></TableCell>
-                  <TableCell>{journey.disabled ? '' : <Link to={`/admin/journey/${journey.id}`}>Journey (vue Admin)</Link>}</TableCell>
-                  <TableCell>{journey.disabled ? '' : <Link to={`/user/journey/${journey.id}`}>Journey (vue User)</Link>}</TableCell>
+                  <TableCell>{journey.disabled ? '' : <Link to={`/admin/journey/${journey.id}`}>Programme (vue Admin)</Link>}</TableCell>
+                  <TableCell>{journey.disabled ? '' : <Link to={`/user/journey/${journey.id}`}>Programme (vue User)</Link>}</TableCell>
                   <TableCell>{journey.disabled ? 'Membre désactivé' : <Link to={`/admin/user/edit/${journey.id}`}>Éditer/Désactiver</Link>}</TableCell>
                 </TableRow>
               ))}
