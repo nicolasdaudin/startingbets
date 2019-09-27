@@ -79,6 +79,7 @@ export class JourneyList extends React.Component {
 
 
 const mapStateToProps = (state,props) => {
+  console.log('mapStateToProps JourneyList');
   return { 
     users : state.users
   }

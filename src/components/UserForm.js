@@ -11,26 +11,40 @@ export default class UserForm extends React.Component {
   constructor(props) {
     super(props);
 
-    // let bookmakers = {};
-    // if (props.user) { 
-    //   bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user.bookmakers.hasOwnProperty(bookmaker)}),{})  
-    // } else {
-    //   bookmakers = BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: true }),{});
-    // }
-    // console.log(bookmakers);
+    console.log('constructor UserForm');
+
 
     this.state = {
       name : props.user ? props.user.name : '',
       email : props.user ? props.user.email : '',
       programType : props.user ? props.user.programType : JOURNEY_PROGRAM_TYPES[0].type,
       goal : props.user ? (props.user.goal).toString() : '',
-      //bookmakers : props.user ? props.user.bookmakers : '',
       bookmakers : BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: props.user ? props.user.bookmakers.hasOwnProperty(bookmaker) : true}),{}),
       programBeginDate : props.user ? moment(props.user.programBeginDate) : moment(),
       calendarFocused: false,
       disableFields: !!props.user ? "disabled" : "",
       error : '',
       disabled : props.user ? props.user.disabled : false
+    }
+  }
+
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.user || this.props.user.id !== prevProps.user.id){
+      //to handle refresh of the page and not lose ALL data
+      // enters this 'if' only when updating with a refresh on the complete page
+      this.setState(() => ({
+        name : this.props.user ? this.props.user.name : '',
+        email : this.props.user ? this.props.user.email : '',
+        programType : this.props.user ? this.props.user.programType : JOURNEY_PROGRAM_TYPES[0].type,
+        goal : this.props.user ? (this.props.user.goal).toString() : '',
+        bookmakers : BOOKMAKERS.reduce((bookmakers,bookmaker) => ({ ...bookmakers, [bookmaker]: this.props.user ? this.props.user.bookmakers.hasOwnProperty(bookmaker) : true}),{}),
+        programBeginDate : this.props.user ? moment(this.props.user.programBeginDate) : moment(),
+        calendarFocused: false,
+        disableFields: !!this.props.user ? "disabled" : "",
+        error : '',
+        disabled : this.props.user ? this.props.user.disabled : false
+      }))
     }
   }
   
@@ -81,7 +95,7 @@ export default class UserForm extends React.Component {
     this.setState (() => ({calendarFocused : focused}));
   }
 
-  onSubmit= (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
 
 
@@ -114,6 +128,8 @@ export default class UserForm extends React.Component {
   }
 
   render () {
+    console.log('render UserForm');
+    console.log('user props',this.props.user);
     return (        
       <form className="form" onSubmit={this.onSubmit}>
         { this.state.error && <p className="form__error">{this.state.error}</p>}

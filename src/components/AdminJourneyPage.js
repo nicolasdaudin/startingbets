@@ -8,7 +8,7 @@ import EarningsCalculationTable from './EarningsCalculationTable';
 import { connect } from 'react-redux';
 
 
-export  class AdminJourneyPage extends React.Component {
+export class AdminJourneyPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

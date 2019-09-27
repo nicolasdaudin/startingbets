@@ -5,6 +5,11 @@ import UserForm from './UserForm';
 import moment from 'moment'
 
 export class EditUserPage extends React.Component {
+  constructor(props){
+    console.log('constructor EUP');
+    super(props);
+  }
+  
   onSubmit = (user) => {
       console.log('about to edit user',user);
       this.props.startEditUser(this.props.user.id,user);
@@ -20,6 +25,7 @@ export class EditUserPage extends React.Component {
 
 
   render() {
+    console.log('render EUP');
     return (
       <div>
         <div className="page-header">
@@ -41,6 +47,7 @@ export class EditUserPage extends React.Component {
 }
 
 const mapStateToProps = (state,props) => {
+  console.log('mapStateToProps EUP');
   return {
     user : state.users.find( (user) => (user.id === props.match.params.userid))
   }
