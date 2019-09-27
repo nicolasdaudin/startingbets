@@ -30,9 +30,11 @@ export default class UserForm extends React.Component {
 
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.user || this.props.user.id !== prevProps.user.id){
+    console.log('componentDidUpdate UserForm')
+    if (prevProps.user && this.props.user.id !== prevProps.user.id){
       //to handle refresh of the page and not lose ALL data
       // enters this 'if' only when updating with a refresh on the complete page
+      console.log('executing state update -  UserForm')
       this.setState(() => ({
         name : this.props.user ? this.props.user.name : '',
         email : this.props.user ? this.props.user.email : '',
