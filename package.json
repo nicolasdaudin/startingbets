@@ -1,6 +1,11 @@
 {
   "name": "startingbets",
-  "version": "0.1.0",
+  "description": "dashboard to handle users of the Starting Bets program",
+  "version": "0.2.0",
+  "engines": { 
+    "node": "12.13.0", 
+    "yarn": "1.17.3"
+  }, 
   "main": "index.js",
   "author": "Nicolas Daudin",
   "license": "MIT",
@@ -30,7 +35,7 @@
     "history": "4.7.2",
     "material-table": "^1.51.0",
     "moment": "2.18.1",
-    "node-sass": "4.5.3",
+    "node-sass": "4.13.0",
     "normalize.css": "7.0.0",
     "numeral": "^2.0.6",
     "raf": "3.3.2",
