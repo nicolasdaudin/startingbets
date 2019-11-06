@@ -14,7 +14,9 @@ import LoadingPage from './components/LoadingPage';
 import {startSetMessages} from './actions/conversation.js'
 import {startSetBookmakerData} from './actions/bookmakers.js';
 import { setEarningsData } from './actions/earnings.js';
-import {startSetUsers} from './actions/users.js';
+import {startSetUsers, isAdminUser} from './actions/users.js';
+import {PersistGate} from 'redux-persist/integration/react';
+
 
 
 moment.locale('fr');
@@ -42,11 +44,14 @@ numeral.register('locale', 'fr', {
 // switch between locales
 numeral.locale('fr');
 
-const store = configureStore();
+const {store, persistor} = configureStore();
+
 //console.log('testing sourcemaps');
 const jsx = (
-  <Provider store={store}>    
-    <AppRouter />
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <AppRouter />
+    </PersistGate>    
   </Provider>
 );
 
@@ -70,30 +75,39 @@ firebase.auth().onAuthStateChanged( (user) => {
   // thats why we want to redirect him to dashboard if he was in the login page, otherwise we don't redirect him
   if (user) { 
     // user logged in
-    //console.log('user logged in');
+    console.log('user logged with uid %s email %s ',user.uid,user.email);
 
-    store.dispatch(login(user.uid));
-    //store.dispatch(startSetMessages());
-    //store.dispatch(startSetBookmakerData());
-    store.dispatch(setEarningsData());
-    store.dispatch(startSetUsers(false));
+    // checking if the user is an admin
+   
+    isAdminUser(user, (isAdmin) => {
+      console.log('result from Promise',isAdmin);
+     
+      
+      console.log('IS ADMIN?',isAdmin);
 
-    renderApp();
-    if (history.location.pathname === '/'){
-      history.push('/admin/dashboard');
-    }
-    /*store.dispatch(startSetExpenses()).then( () => {
+      store.dispatch(login(user.uid,isAdmin));
+      //store.dispatch(startSetMessages());
+      //store.dispatch(startSetBookmakerData());
+      store.dispatch(setEarningsData());
+      store.dispatch(startSetUsers());
+
       renderApp();
       if (history.location.pathname === '/'){
-        history.push('/dashboard');
+        (isAdmin) ? history.push('/admin/dashboard') : history.push('/user/dashboard');
       }
-    });*/
+      /*store.dispatch(startSetExpenses()).then( () => {
+        renderApp();
+        if (history.location.pathname === '/'){
+          history.push('/dashboard');
+        }
+      });*/
+    });
   } else {
     // user logged out
     console.log('user logged out');
     
     store.dispatch(logout());
     renderApp();
-    history.push('/');
+    //history.push('/');
   }
 })

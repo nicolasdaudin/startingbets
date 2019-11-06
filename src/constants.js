@@ -4,6 +4,8 @@ export const JOURNEY_PROGRAM_TYPES = [
   {type:'400-ES',label:'Programme Espagne 400 euros 🇪🇸',default_goal:400}
 ];
 
+
+
 export const DEFAULT_BOOKMAKER_DATA = { deposit : 0, balance: 0, withdrawal:0, validationDate : '', validated: '', link: ''}
 
 

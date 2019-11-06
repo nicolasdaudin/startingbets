@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {startAddUser} from '../actions/users';
-import UserForm from './UserForm';
-import moment from 'moment'
+import UserForm from './user/UserForm';
 
 export  class AddUserPage extends React.Component {
   onSubmit = (user) => {

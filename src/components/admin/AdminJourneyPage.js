@@ -1,10 +1,10 @@
 import React from 'react';
-import JourneyConversation from './JourneyConversation';
-import AddJourneyMessageForm from './AddJourneyMessageForm'
+import JourneyConversation from '../JourneyConversation'
+import AddJourneyMessageForm from '../AddJourneyMessageForm'
 import {Link} from 'react-router-dom';
-import BookmakerFundsTable from './BookmakerFundsTable';
-import BookmakerActivationTable from './BookmakerActivationTable';
-import EarningsCalculationTable from './EarningsCalculationTable';
+import BookmakerFundsTable from '../BookmakerFundsTable';
+import BookmakerActivationTable from '../BookmakerActivationTable';
+import EarningsCalculationTable from '../EarningsCalculationTable';
 import { connect } from 'react-redux';
 
 
@@ -29,7 +29,6 @@ export class AdminJourneyPage extends React.Component {
         <h3>Nom: {this.props.user.name} - Email: {this.props.user.email}</h3>
         <Link to="/admin/dashboard">Dashboard ADMIN</Link> -&nbsp;
         <Link to={`/admin/journey/${this.props.user.id}`}>Programme (vue Admin)</Link> -&nbsp;
-        <Link to={`/user/journey/${this.props.user.id}`}>Programme (vue User)</Link> -&nbsp;
         <div className='journey-container'>
           <div className='conversation-container'>
             <JourneyConversation userid={this.props.user.id} role="admin"/>

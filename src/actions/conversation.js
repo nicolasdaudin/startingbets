@@ -1,4 +1,5 @@
 import db from '../firebase/firebase';
+import moment from 'moment';
 
 export const setMessages = (messages) => ({
   type: 'SET_MESSAGES',
@@ -34,8 +35,36 @@ export const startAddMessage = (message,uid) => {
     //const uid = getState().auth.uid;
     //const uid = 2;
     return db.ref(`users/${uid}/messages`).push(message).then((ref) => {
-      dispatch (addMessage(message,uid));
-      
+      dispatch (addMessage({
+        ...message,
+        id: ref.key
+      }));
     });
   }
 }
+export const startMarkMessagesAsRead = (uid,role) => {
+  return (dispatch,getState) => {
+    return db.ref(`users/${uid}/messages`).once('value').then((snapshot) => {
+      let updates = {};
+      const readAt = moment().valueOf();
+      
+      snapshot.forEach((childSnapshot) => {
+        if (childSnapshot.child("origin").val() === role && !childSnapshot.hasChild("readAt")){                
+          // we add readAt
+          updates[childSnapshot.key] = { ...childSnapshot.val(), readAt : readAt}        
+        }
+      });
+
+      return db.ref(`users/${uid}/messages`).update(updates).then(() => {        
+        dispatch(markMessagesAsRead(role,readAt));
+      });
+    })
+  }
+}
+
+// we should check that we update the correct messages : that theseare the messages of the current user and not something else 
+export const markMessagesAsRead = (role, readAt) => ({
+  type: 'MARK_MESSAGES_AS_READ',
+  role,
+  readAt
+})

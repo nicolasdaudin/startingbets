@@ -1,29 +1,31 @@
-import uuid from 'uuid';
-import db from '../firebase/firebase';
-import {DEFAULT_BOOKMAKER_DATA} from '../constants';
+import db, {firebase,config} from '../firebase/firebase';
+
 
 export const addUser = (user) => ({
   type: 'ADD_USER',
   user
-})
+});
 
-export const startAddUser = (user) => {
+
+
+export const startAddUser = (user,uid) => {
   return (dispatch, getState) => {
-    //console.log('user to be added',user);
-    const bookmakersObject = [];
-    Object.keys(user.bookmakers).forEach(bookmaker => {
-      //console.log(bookmaker)
-      if (user.bookmakers[bookmaker]) {
-        bookmakersObject[bookmaker] = DEFAULT_BOOKMAKER_DATA;
-      }
-    });
-    user.bookmakers = bookmakersObject;
-    return db.ref(`users`).push(user).then((ref) => {
+    
+    // bookmakers
+    // const bookmakersObject = [];
+    // Object.keys(user.bookmakers).forEach(bookmaker => {
+    //   //console.log(bookmaker)
+    //   if (user.bookmakers[bookmaker]) {
+    //     bookmakersObject[bookmaker] = DEFAULT_BOOKMAKER_DATA;
+    //   }
+    // });
+    // user.bookmakers = bookmakersObject;
+    return db.ref(`users/${uid}`).set(user).then((ref) => {
       dispatch (addUser({
-        id:ref.key,
+        id:uid,
         ...user
       }))
-    });
+    });  
   }
 }
 
@@ -37,9 +39,11 @@ export const startEditUser = (id, updates) => {
   return (dispatch, getState) => {
     return db.ref(`users/${id}`).update(updates).then( () => {
       dispatch(editUser(id,updates));
+      //startSetUsers();
     })
   }
 }
+
 
 export const disableUser = (id) => ({
   type: 'DISABLE_USER',
@@ -48,7 +52,7 @@ export const disableUser = (id) => ({
 
 export const startDisableUser = (id) => {
   return (dispatch, getState) => {
-    return db.ref(`users/${id}`).update({disabled: true}).then( () => {
+    return db.ref(`users/${id}`).update({status: 'disabled'}).then( () => {
       dispatch(disableUser(id));
     })
   }
@@ -59,25 +63,28 @@ export const setUsers = (users) => ({
   users
 })
 
-export const startSetUsers = (showDisabled) => {
-  return (dispatch,getState) => {
-    const usersRef = db.ref(`users`);
-    let usersQuery = usersRef;
-    if (!showDisabled) { 
-      usersQuery = usersQuery.orderByChild('disabled').equalTo(false)
-    }
-    //return db.ref(`users`).once('value').then((snapshot) => {
-    return usersQuery.once('value').then((snapshot) => {
+export const startSetUsers = (showDisabled = false) => {
+  return (dispatch,getState) => {    
+    return db.ref(`users`).once('value').then((snapshot) => {
       const users = [];
-      snapshot.forEach(childSnapshot => {        
-        users.push({
-          id:childSnapshot.key,
-          ...childSnapshot.val()
-        })
+      snapshot.forEach(childSnapshot => {  
+        if (showDisabled || childSnapshot.child('status').val() !== 'disabled'){      
+          users.push({
+            id:childSnapshot.key,
+            ...childSnapshot.val()
+          })
+        }
         //console.log(childSnapshot.key, childSnapshot.val())
       });
 
       dispatch(setUsers(users));
     })
   }
+}
+
+export const isAdminUser = (user,callback) => {  
+  db.ref(`users`).orderByKey().equalTo(user.uid).once('value')
+    .then((snapshot) => {        
+        callback(!snapshot.hasChildren()); 
+    });  
 }

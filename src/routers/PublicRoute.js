@@ -4,22 +4,31 @@ import {Route,Redirect} from 'react-router-dom';
 
 export const PublicRoute = ({
   isAuthenticated, 
+  isAdmin,
   component: Component , 
   ...restOfProps
 }) => (
   <Route {...restOfProps} component={(props) => (
-    isAuthenticated ? (
-      <div>
-        <Redirect to="/admin/dashboard" />        
-      </div>
-    ) : (
-      <Component {...props} />
-    )   
+    isAuthenticated ? 
+      ( isAdmin ? 
+        (
+          <div>
+            <Redirect to="/admin/dashboard" />        
+          </div>
+        ) : (
+          <div>
+            <Redirect to="/user/dashboard" />        
+          </div>
+        )
+      ) : (
+        <Component {...props} />
+      )   
   )}/>
 );
 
 const mapStateToProps = (state) => ({
-  isAuthenticated : !!state.auth.uid
+  isAuthenticated : !!state.auth.uid,
+  isAdmin: !!state.auth.isAdmin
 });
 
 export default connect(mapStateToProps)(PublicRoute);

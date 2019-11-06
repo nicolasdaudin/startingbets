@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {startAddMessage} from '../actions/conversation';
+import {startEditUser} from '../actions/users';
 import moment from 'moment';
 import {USER_ACTIONS} from '../constants.js';
 
@@ -25,17 +26,30 @@ export  class AddJourneyMessageForm extends React.Component {
   }
   onSubmit = (e) => {
     e.preventDefault();
+
+    const createdAt = moment().valueOf();
     
     this.props.startAddMessage({
       content : this.state.message,
       origin : this.state.origin,
       type: this.state.type || USER_ACTIONS[0].type,
-      date: moment().valueOf()
-    },this.props.userid)
+      createdAt,
+      readAt: null
+    },this.props.userid);
+
+    if (this.state.origin === 'user') {
+      this.props.startEditUser(
+        this.props.userid,
+        createdAt,
+        false
+      )
+    };
     
     this.setState(() => ({message : '',type: null}));
     
   }
+
+  
 
   onChooseAction = (e) => {    
     const id = e.target.id; 
@@ -69,7 +83,8 @@ export  class AddJourneyMessageForm extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startAddMessage : (message,userid) => { dispatch(startAddMessage(message,userid))}
+  startAddMessage : (message,userid) => { dispatch(startAddMessage(message,userid))},
+  startEditUser : (userid,lastUserMessageDate,allUserMessagesHaveBeenRead) => { dispatch(startEditUser(userid,{ lastUserMessageDate, allUserMessagesHaveBeenRead }))}
 });
 
 export default connect(null,mapDispatchToProps)(AddJourneyMessageForm)

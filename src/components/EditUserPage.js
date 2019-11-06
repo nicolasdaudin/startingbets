@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {startEditUser, startDisableUser} from '../actions/users';
-import UserForm from './UserForm';
+import UserForm from './admin/UserForm';
 import moment from 'moment'
 
 export class EditUserPage extends React.Component {
-  constructor(props){
-    console.log('constructor EUP');
+  constructor(props){    
     super(props);
   }
   
@@ -24,13 +23,12 @@ export class EditUserPage extends React.Component {
 
 
 
-  render() {
-    console.log('render EUP');
+  render() {    
     return (
       <div>
         <div className="page-header">
           <div className="content-container">
-            <h2 className="page-header__title">Éditer un membre</h2>
+            <h2 className="page-header__title">{ this.props.user.status === 'inactive' ? 'Activer un membre' : 'Éditer un membre'} </h2>
           </div>
         </div>
         <div className="content-container">
@@ -46,8 +44,7 @@ export class EditUserPage extends React.Component {
   }
 }
 
-const mapStateToProps = (state,props) => {
-  console.log('mapStateToProps EUP');
+const mapStateToProps = (state,props) => {  
   return {
     user : state.users.find( (user) => (user.id === props.match.params.userid))
   }

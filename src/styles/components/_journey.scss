@@ -43,6 +43,10 @@
   white-space: pre; 
 }
 
+.unread {
+  font-weight: bolder;
+}
+
 .message-info {  
   margin:0;
   font-size: $font-size-small;
